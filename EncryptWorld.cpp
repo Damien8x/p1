@@ -23,7 +23,7 @@ string phrase;
 
 EncryptWorld::EncryptWorld()
 {
-	this-> shift = 3;
+	this-> shift = 0;
 	this-> on = true;
 	this-> guessCount = 0;
 	this-> avgGuess = 0;
@@ -33,37 +33,28 @@ EncryptWorld::EncryptWorld()
 	this-> phrase = " ";
 	
 }
-EncryptWorld::EncryptWorld(string phrase)
+
+
+string EncryptWorld::encrypt(string phrase)
 {
-	this-> phrase = phrase;
-	this-> shift = 3;
-	this-> on = true;
-	this-> guessCount = 0;
-	this-> avgGuess = 0;
-	this-> totalGuess = 0;
-	this-> highGuessCount = 0;
-	this-> lowGuessCount = 0;
-	
+	int randomShift = rand() % 9 + 1;
+	shift = randomShift;
 
-}
-
-
-string EncryptWorld::encrypt()
-{
+	setPhrase(phrase);
 	if (on == false) {
-		cout << "Sorry, this setting has been disabled.";
+		cout << "Sorry, encryption has been disabled. \n";
 		return getPhrase();
 	}
 	else {
-		string phrase = getPhrase();
+		
 
 			string crypticPhrase;
 
-			int lowerLowShift = 90 - shift;
+			int lowerLowShift = 90 - randomShift;
 
-			int upperHighShift = 123 - shift;
+			int upperHighShift = 123 - randomShift;
 
-			int caesarShift = 26 - shift;
+			int caesarShift = 26 - randomShift;
 
 			int crypticAscii;
 
@@ -81,7 +72,7 @@ string EncryptWorld::encrypt()
 					crypticAscii = ascii - caesarShift;
 				}
 				else {
-					crypticAscii = ascii + 3;
+					crypticAscii = ascii + randomShift;
 				}
 
 				char crypticChar = char(crypticAscii);
@@ -96,11 +87,8 @@ string EncryptWorld::encrypt()
 
 int EncryptWorld::checkShift(int guess)
 {
-	if (on == false) {
-		cout << "Sorry, this setting has been disabled.";
-		return 2;
-	}
-	else if (guess == shift)
+	
+	if (guess == shift)
 	{
 		return 0;
 	}
@@ -114,33 +102,26 @@ int EncryptWorld::checkShift(int guess)
 		return -1;
 
 }
-bool EncryptWorld::objectOff(bool setting)
+void EncryptWorld::encryptionOff(bool setting)
 {
 
 	if (setting == true)
 	{
 		setOn(true);
 
-		return true;
+		
 	}
 	else if (setting == false)
 	{
 		setOn(false);
-		return false;
+		
 	}
-	else
-		return true;
-
+	
 }
 
 void EncryptWorld::objectReset()
 {
-	if (on == false) {
-		cout << "Sorry, this setting has been disabled.";
-	}
-	else {
-		int randomShift = 1 + rand() % 9;
-		this->shift = randomShift;
+		this->shift = 0;
 		this->on = true;
 		this->guessCount = 0;
 		this->avgGuess = 0;
@@ -148,7 +129,7 @@ void EncryptWorld::objectReset()
 		this->highGuessCount = 0;
 		this->lowGuessCount = 0;
 		this->phrase = " ";
-	}
+	
 }
 
 void EncryptWorld::statistics(int guess, int relativeToShift)
@@ -169,16 +150,9 @@ void EncryptWorld::statistics(int guess, int relativeToShift)
 }
 
 void EncryptWorld::setPhrase(string phrase) {
-	if (on == false) {
-		cout << "Sorry, this setting has been disabled.";
-	}
-	else {
-		if (phrase.length() < 5) {
-			cout << "phrase must be at least 5 characters";
-		}
-		else
-			this->phrase = phrase;
-	}
+	
+		this->phrase = phrase;
+
 }
 void EncryptWorld::setGuessCount() {
 	this->guessCount++;
@@ -207,44 +181,28 @@ string EncryptWorld::getPhrase() {
 	return phrase;
 }
 int EncryptWorld::getGuessCount() {
-	if (on == false) {
-		cout << "Sorry, this setting has been disabled.";
-		return -1;
-	}else
+	
+
 	return guessCount;
 }
 
 int EncryptWorld::getTotalGuess() {
-	if (on == false) {
-		cout << "Sorry, this setting has been disabled.";
-		return -1;
-	}
-	else
+	
+	
 	return totalGuess;
 }
 
 double EncryptWorld::getAvgGuess() {
-	if (on == false) {
-		cout << "Sorry, this setting has been disabled.";
-		return -1;
-	}
-	else
+	
 	return avgGuess;
 }
 
 int EncryptWorld::getLowGuessCount() {
-	if (on == false) {
-		cout << "Sorry, this setting has been disabled.";
-		return -1;
-	}
-	else
+	
+
 	return lowGuessCount;
 }
 int EncryptWorld::getHighGuessCount() {
-	if (on == false) {
-		cout << "Sorry, this setting has been disabled.";
-		return -1;
-	}
-	else
+	
 	return highGuessCount;
 }
