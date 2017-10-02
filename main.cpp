@@ -75,5 +75,80 @@ int main()
 	// wrap to beginning of alphabet. all blank spaces should be persistent. Shift is randomly generated and should uniformly shift output. 
 	cout << ew.encrypt("aa bb cc xx yy zz AA BB CC XX YY ZZ") << endl << endl;
 
+	cout << "*********************************************************" << endl;
+	
+	string encryptPhrase;
+	EncryptWorld ewUserObject;
+	int guess;
+	bool keepGameGoing = true;
+	int guessRelativeShift;
+	
+
+	cout << "care to play a game? Enter a phrase you wish to encrypt" << endl;
+	
+	getline(cin, encryptPhrase);
+
+	cout << "\nYour encrypted phrase is:" << endl;
+	cout << ewUserObject.encrypt(encryptPhrase) << endl << endl;
+	cout << "Now comes the game! " << endl;
+	cout << "Your phrase is based on a caesar cryptic shift, a shift of letters" << endl;
+	cout << "A shift of 1 would make a->b and z->a" << endl;
+	cout << "The shift has a minimum of 1 and a max of 9. What's your guess?" << endl << endl;
+	try {
+	while (keepGameGoing = true) {
+		char playAgain = 'n';
+			cin >> guess;
+			cin.ignore();
+
+		 			guessRelativeShift = ewUserObject.checkShift(guess);
+				if (guessRelativeShift == -1) {
+					cout << "your guess is to low" << endl;
+					cout << " guess again, higher this time." << endl << endl;
+					}
+				else if (guessRelativeShift == 1) {
+					cout << "your guess is to high" << endl;
+					cout << "guess again, lower this time" << endl << endl;;
+				}
+				else if (guessRelativeShift == 0) {
+					cout << "Ding Ding Ding! you guessed correct" << endl;
+					cout << "Here are some statistics of your game:" << endl;
+					cout << "Guess Count: \t\t" << ewUserObject.getGuessCount() << endl;
+					cout << "Sum of Guesses: \t" << ewUserObject.getTotalGuess() << endl;
+					cout << "Total High Guesses: \t" << ewUserObject.getHighGuessCount() << endl;
+					cout << "Total Low Guesses: \t" << ewUserObject.getLowGuessCount() << endl;
+					cout << "Average Guess: \t\t" << ewUserObject.getAvgGuess() << endl;
+					cout << "would you like to play again? y/n" << endl;
+					while (playAgain == 'n') {
+						cin >> playAgain;
+
+							if (playAgain == 'y') {
+								keepGameGoing = true;
+								ewUserObject.objectReset();
+								cout << "enter a new phrase to encrypt" << endl;
+								cin.ignore();
+								getline(cin, encryptPhrase);
+								cout << "your new phrase is:" << endl;
+								cout << ewUserObject.encrypt(encryptPhrase) << endl << endl;
+								cout << "Now what's the shift?" << endl;
+							}
+							else if (playAgain == 'n') {
+								cout << "thanks for playing" << endl;
+								keepGameGoing = false;
+								playAgain = 'y';
+							}
+							else {
+								cout << "you must enter either 'y' or 'n'" << endl;
+							}
+					}
+					
+				}
+			
+		}
+
+	}
+	catch (exception e) {
+		cout << "you must enter an integer between 1 and 9****" << endl << endl;  cin.ignore();
+	}
+
 	cin.get();
 }
