@@ -1,7 +1,7 @@
 // Author: Damien Sudol
 // Filename: EncryptWorld P1
 // Date: 09/28/2017
-// Version: 1.0
+// Version: 1.2
 //
 // 
 //
@@ -20,7 +20,6 @@ int highGuessCount;
 int lowGuessCount;
 string phrase;
 
-
 EncryptWorld::EncryptWorld()
 {
 	this-> shift = 0;
@@ -30,24 +29,19 @@ EncryptWorld::EncryptWorld()
 	this-> totalGuess = 0;
 	this-> highGuessCount = 0;
 	this-> lowGuessCount = 0;
-	this-> phrase = " ";
-	
+	this-> phrase = "";	
 }
-
 
 string EncryptWorld::encrypt(string phrase)
 {
-	int randomShift = rand() % 9 + 1;
-	shift = randomShift;
-
 	setPhrase(phrase);
 	if (on == false) {
 		cout << "Sorry, encryption has been disabled. \n";
 		return getPhrase();
 	}
 	else {
-		
-
+			int randomShift = rand() % 9 + 1;
+			shift = randomShift;
 			string crypticPhrase;
 
 			int lowerLowShift = 90 - randomShift;
@@ -74,22 +68,18 @@ string EncryptWorld::encrypt(string phrase)
 				else {
 					crypticAscii = ascii + randomShift;
 				}
-
 				char crypticChar = char(crypticAscii);
 				crypticPhrase.push_back(crypticChar);
-
 			}
-
 			return crypticPhrase;
 		}
-	
 }
 
 int EncryptWorld::checkShift(int guess)
 {
-	
 	if (guess == shift)
 	{
+		statistics(guess, 0);
 		return 0;
 	}
 	else if (guess > shift)
@@ -100,23 +90,18 @@ int EncryptWorld::checkShift(int guess)
 	else
 		statistics(guess, -1);
 		return -1;
-
 }
+
 void EncryptWorld::encryptionOff(bool setting)
 {
-
 	if (setting == true)
 	{
-		setOn(true);
-
-		
+		setOn(true);	
 	}
 	else if (setting == false)
 	{
-		setOn(false);
-		
+		setOn(false);	
 	}
-	
 }
 
 void EncryptWorld::objectReset()
@@ -129,7 +114,6 @@ void EncryptWorld::objectReset()
 		this->highGuessCount = 0;
 		this->lowGuessCount = 0;
 		this->phrase = " ";
-	
 }
 
 void EncryptWorld::statistics(int guess, int relativeToShift)
@@ -146,14 +130,12 @@ void EncryptWorld::statistics(int guess, int relativeToShift)
 	{
 		setLowGuessCount();
 	}
-	
 }
 
 void EncryptWorld::setPhrase(string phrase) {
-	
 		this->phrase = phrase;
-
 }
+
 void EncryptWorld::setGuessCount() {
 	this->guessCount++;
 }
@@ -161,48 +143,46 @@ void EncryptWorld::setGuessCount() {
 void EncryptWorld::setTotalGuess(int guess) {
 	this->totalGuess += guess;
 }
+
 void EncryptWorld::setAvgGuess(int totalGuess, int guessCount) {
 	this->avgGuess = totalGuess / guessCount;
 }
+
 void EncryptWorld::setHighGuessCount() {
 	this->highGuessCount++;
 }
+
 void EncryptWorld::setLowGuessCount() {
 	this->lowGuessCount++;
 }
+
 void EncryptWorld::setOn(bool setting) {
 	this->on = setting;
 }
 
-bool EncryptWorld::getOn() {
+bool EncryptWorld::getOn() const {
 	return on;
 }
-string EncryptWorld::getPhrase() {
+
+string EncryptWorld::getPhrase() const {
 	return phrase;
 }
-int EncryptWorld::getGuessCount() {
-	
 
+int EncryptWorld::getGuessCount() const{
 	return guessCount;
 }
 
-int EncryptWorld::getTotalGuess() {
-	
-	
+int EncryptWorld::getTotalGuess() const{
 	return totalGuess;
 }
 
-double EncryptWorld::getAvgGuess() {
-	
+double EncryptWorld::getAvgGuess() const {
 	return avgGuess;
 }
 
-int EncryptWorld::getLowGuessCount() {
-	
-
+int EncryptWorld::getLowGuessCount() const {
 	return lowGuessCount;
 }
-int EncryptWorld::getHighGuessCount() {
-	
+int EncryptWorld::getHighGuessCount() const{	
 	return highGuessCount;
 }

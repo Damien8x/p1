@@ -1,11 +1,17 @@
 // Author: Damien Sudol
 // Filename: EncryptWorld P1
 // Date: 09/28/2017
-// Version: 1.0
+// Version: 1.2
 //
-// Desctription: 
-//
-// Assumtpions
+// Desctription: Class designed for applications where caesar shift encryption is necessary, with extended uses including necessary methods for a responsive encryption "shift" guessing gamae.
+// encrypt() method fascilitates a  caesar shift  encryption of a string argument, with a random shift value between 1-9. EncryptWorld objects tracks data passed through its method checkShift() and 
+// makes statistical data available though a number of "get" methods, including; an average of passed integers, total of all integers passed,  a count of integers passed,
+// a count of integers passed less than shift value and a count of integers passed greater than shift value. intent of provided data is to make accesible the necessary information for an application capable
+// of allowing users to view an encrypted phrase and make a guess of the "shift" value used. provided information can be programmed to aid or display statistics to the user. Class object is capable
+// of diabling access to the encrypt() method if a boolean value of "false"  is passed to the encryptionOff() method. Access can be made available with a "true" value as an argument to the encryptionOff() method. 
+// encryptionOff() will allow application programmer to deactivate encryption until a user guesses the correct shift. Other applications of the encryptionOff() method are possible and welcomed. EncryptWorldd
+// object has a objectReset() method, bringing all values of object to its initial state. objectReset() allows for repeat use of object over multiple encryptions and guessing games, allowing for new, fresh
+// statistics. Method particulars and change affects on object states will be laid out in the method descriptions below.
 
 #include <iostream>
 using namespace std;
@@ -13,8 +19,6 @@ using namespace std;
 class EncryptWorld
 {
 public:
-
-	
 	// definition: class constructor, called to initialize EncryptWorld object. Object is necessary to access public methods of EncryptWorld class.
 	// precondition: constructor accepts no arguments. state of object is not applicable prior to call.
 	// postcondition: object initialized with default values.
@@ -38,7 +42,7 @@ public:
 	// which relate to the integer values passed to method and the current EncryptWorld "shift" value. -1 will be returned if passed argument is less than "shift" value,
 	// 1 will be returned if passed argument is greater than "shift" value, 0 will be returned if passed argument is equal to "shift" value. Returned value can be utilized in application
 	// to guide user's guesses towards the "shift value". 
-	// precondition: EncryptWorld "shift" value will be "0" by default until encrypt(string) method is called. an integer value must be passed to argument. 
+	// precondition: EncryptWorld "shift" value will be "0" by default until encrypt(string) method is called(assigning a random value between 1-9). an integer value must be passed to argument. 
 	// postcondition: EncryptWorld class utilizes checkShift(int) method to track data to be utilized by applications. Every call to method will change state of object to reflect the
 	// passed integer related to "shift" value, including return values of the following EncryptWorld methods; getGuessCount() return value will increment by 1 for each call to checkShift(int),
 	// getTotalGuess() return value will increase by the value of integer passed to checkShift(int), getAvgGuess() return value update to reflect an avg of all passed values to checkShift(int) post
@@ -48,42 +52,40 @@ public:
 
 	// definition: Disables encryptWorld(string) from returning encryption of passed string.
 	// precondition: Accepts boolean value of "true" to enable encryptWorld(string) encryption or "false" to disable.
-	// postcondition: All values of object attributes will remain identical post call. calls to encryptWorld(string) will display
-	// prompt stating encryption has been disabled.
+	// postcondition: All values of object attributes will remain identical post call. calls to encryp(string) will display
+	// prompt stating encryption has been disabled and not execute the method any further.
 	void encryptionOff(bool);
 
 	// definition: resets all class attributes to default values. assumed use; prior to call to encrypt(string) and subsequently checkShift(int) method, allowing for user statistics
 	// associated with checkShift(int) to not include prior encryptions and "guesses".
-	// precondition: object takes no arguments. if object state has not been changed post initialization, method will have no effect on object state.
+	// precondition: object takes no arguments. if object state has not been changed post initialization, method will have no impact on object's state.
 	// postcondition: will return object to original state of initialization. 
 	void objectReset();
 
 	// definition: Associated with checkShift() method, returns total "guesses" by user (calls to checkShift()).
 	// precondition: if checkShift() has not been called, a default value of 0 will be returned.
-	// postcondition: returns value of all calls to checkShift() method. object state not effected.
-	int getGuessCount();
+	// postcondition: returns value of all calls to checkShift() method. object state not be impacted.
+	int getGuessCount() const;
 
 	// definition: Associated with checkShift() method, returns total of "guess" values by user (total of integers passed as checkShift() argument).
 	// precondition: if checkShift() has not been called, a default value of 0 will be returned.
-	// postcondition: returns value of all integer arguments passed to checkShift() method. object state not effected.
-	int getTotalGuess();
+	// postcondition: returns value of all integer arguments passed to checkShift() method. object state not be impacted.
+	int getTotalGuess() const;
 
 	// definition: Associated with checkShift() method, returns average of total "guess" values and total "guesses" (checkShift() calls and total of integers passed as checkShift() arguments)
 	// precondition: if checkShift() has not been called, a default value of 0 will be returned.
-	// postcondition: returns average of getGuessCount() and getTotalGuessCount(). object state not effected.
-	double getAvgGuess();
+	// postcondition: returns average of getGuessCount() and getTotalGuessCount(). object state not be impacted.
+	double getAvgGuess() const;
 
 	// defintion: Associated with cheeckShift() method returns, the number of "guesses" less than cryptic shift value at time of call (total of -1 return values from checkShift() calls)
 	// precondition: a call to checkShift() with a return value of -1 required for a return value other than the default 0.
-	// postcondition: returns the number of -1 return values from previous checkShift() calls. object state not effected.
-	int getLowGuessCount();
+	// postcondition: returns the number of -1 return values from previous checkShift() calls. object state not be impacted.
+	int getLowGuessCount() const;
 
 	//definition: associated with checkShift() method, returns the number of "guesses" greater than  cryptic shift value at time of call (total of 1 return values from checkShift() calls)
 	// precondition: a call to checkShift() with a return value of 1 required for a return value other than the default 0.
-	// postcondition: returns the number of 1 return values from previous checkShift() calls. object state not effected.
-	int getHighGuessCount();
-
-	
+	// postcondition: returns the number of 1 return values from previous checkShift() calls. object state not be impacted.
+	int getHighGuessCount() const;	
 
 private:
 	
@@ -103,7 +105,7 @@ private:
 
 	void setOn(bool);
 	
-	bool getOn();
+	bool getOn() const;
 
 	string phrase;
 
@@ -121,6 +123,5 @@ private:
 
 	int lowGuessCount;
 
-	string getPhrase();
-
+	string getPhrase() const;
 };
