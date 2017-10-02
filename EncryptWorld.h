@@ -1,7 +1,7 @@
 // Author: Damien Sudol
 // Filename: EncryptWorld P1
 // Date: 09/28/2017
-// Version: 1.2
+// Version: 1.0
 //
 // Desctription: Class designed for applications where caesar shift encryption is necessary, with extended uses including necessary methods for a responsive encryption "shift" guessing gamae.
 // encrypt() method fascilitates a  caesar shift  encryption of a string argument, with a random shift value between 1-9. EncryptWorld objects tracks data passed through its method checkShift() and 
@@ -35,7 +35,8 @@ public:
 	// called from application, prior to encrypt(string) with a passed value of false, encryption will not be possible.
 	// postcondition: if conditions are met, passed string has value of 4 or more characters, and encryptionOff(bool) has not been called with "false" value as argument an ecrypted string
 	// will be returned. if passed string is less than 4 characters a prompt will be displayed on console and encryption will not take place. if application has called encryptionOff(bool)
-	// with "false" argument passed a prompt will display and encryption will be unavailable.
+	// with "false" argument passed, a prompt will display and encryption will be unavailable. if a string of under 4 characters is passed as an argument an prompt will display
+	// stating a phrase must be a minimum of four characters. This exception must be handled on the application side to ensure a logical flow is maintained.
 	string encrypt(string);
 
 	// definition: assumed that method will be used as a tool to determine value of the encryption "shift" used in encrypt(string). method has three possible integer return values

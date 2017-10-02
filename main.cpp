@@ -19,10 +19,18 @@ int main()
 {
 	// create EncryptWorld object
 	EncryptWorld ew;
+	
+	// test that strings less than 4 characters
+	// expected output: prompt asking for a minimum of 4 characters displayed with a return value equal to passed string (unencrypted).
+	// while loop to continue prompt until a string of 4 characters is provided
+	string phrase = "aaa";
+	while (phrase == ew.encrypt(phrase)) {
+		phrase = "aa bb cc xx yy zz AA BB CC XX YY ZZ";
+	}
 
 	// expect output: 12 pairs of characters in sequential sets of 3. 6 pairs lowercase and 6 pairs of an upppercase equivalent returned.  any value shifted beyond 'z' or 'Z' should 
 	// wrap to beginning of alphabet. all blank spaces should be persistent. Shift is randomly generated and should uniformly shift output. 
-	cout << ew.encrypt("aa bb cc xx yy zz AA BB CC XX YY ZZ") << endl << endl;
+	cout << ew.encrypt(phrase) << endl << endl;
 
 	// disable encryption
 	ew.encryptionOff(false);
@@ -76,79 +84,34 @@ int main()
 	cout << ew.encrypt("aa bb cc xx yy zz AA BB CC XX YY ZZ") << endl << endl;
 
 	cout << "*********************************************************" << endl;
-	
-	string encryptPhrase;
-	EncryptWorld ewUserObject;
-	int guess;
-	bool keepGameGoing = true;
-	int guessRelativeShift;
-	
 
-	cout << "care to play a game? Enter a phrase you wish to encrypt" << endl;
-	
-	getline(cin, encryptPhrase);
+	// create a second EncryptWorld object
+	EncryptWorld ew2;
 
-	cout << "\nYour encrypted phrase is:" << endl;
-	cout << ewUserObject.encrypt(encryptPhrase) << endl << endl;
-	cout << "Now comes the game! " << endl;
-	cout << "Your phrase is based on a caesar cryptic shift, a shift of letters" << endl;
-	cout << "A shift of 1 would make a->b and z->a" << endl;
-	cout << "The shift has a minimum of 1 and a max of 9. What's your guess?" << endl << endl;
-	try {
-	while (keepGameGoing = true) {
-		char playAgain = 'n';
-			cin >> guess;
-			cin.ignore();
+	// encrypt() will shift special characters and numbers without any wrapping.
+	cout << ew2.encrypt("this is to test special characters 123 123 !@#$%^&*( ") << endl << endl;
 
-		 			guessRelativeShift = ewUserObject.checkShift(guess);
-				if (guessRelativeShift == -1) {
-					cout << "your guess is to low" << endl;
-					cout << " guess again, higher this time." << endl << endl;
-					}
-				else if (guessRelativeShift == 1) {
-					cout << "your guess is to high" << endl;
-					cout << "guess again, lower this time" << endl << endl;;
-				}
-				else if (guessRelativeShift == 0) {
-					cout << "Ding Ding Ding! you guessed correct" << endl;
-					cout << "Here are some statistics of your game:" << endl;
-					cout << "Guess Count: \t\t" << ewUserObject.getGuessCount() << endl;
-					cout << "Sum of Guesses: \t" << ewUserObject.getTotalGuess() << endl;
-					cout << "Total High Guesses: \t" << ewUserObject.getHighGuessCount() << endl;
-					cout << "Total Low Guesses: \t" << ewUserObject.getLowGuessCount() << endl;
-					cout << "Average Guess: \t\t" << ewUserObject.getAvgGuess() << endl;
-					cout << "would you like to play again? y/n" << endl;
-					while (playAgain == 'n') {
-						cin >> playAgain;
+	// for loop to determine if checkShift() method provides correct return values of passed argument in relation to "shift" value for all possible shift values.
+	for (int i = 1; i < 10; i++) {
 
-							if (playAgain == 'y') {
-								keepGameGoing = true;
-								ewUserObject.objectReset();
-								cout << "enter a new phrase to encrypt" << endl;
-								cin.ignore();
-								getline(cin, encryptPhrase);
-								cout << "your new phrase is:" << endl;
-								cout << ewUserObject.encrypt(encryptPhrase) << endl << endl;
-								cout << "Now what's the shift?" << endl;
-							}
-							else if (playAgain == 'n') {
-								cout << "thanks for playing" << endl;
-								keepGameGoing = false;
-								playAgain = 'y';
-							}
-							else {
-								cout << "you must enter either 'y' or 'n'" << endl;
-							}
-					}
-					
-				}
-			
-		}
+		// expect -1 returns prior to a return of 0 and return values of 1 post 0. 0 represents encryption key
+		cout << "Guess: " << i << ": \t" << "Relative Value: " << ew2.checkShift(i) << endl;
 
+		// expect 0 return value pre encryption key, followed by an incremental return value post encryption key
+		cout << "High Guess Count: \t" << ew2.getHighGuessCount() << endl;
+
+		// expect incremental return value pre encryption key and repeating value post encryption key
+		cout << "Low Guess Count: \t" << ew2.getLowGuessCount() << endl;
+
+		// ecpect incremental return value from 1 to 9
+		cout << "Total Guess Count: \t" << ew2.getGuessCount() << endl;
+
+		// expect an addition of passed value to prior value, with an ending value of 45
+		cout << "Total Guess Count Sum: \t" << ew2.getTotalGuess() << endl;
+
+		// expect an average between "total guess count sum" and "total guess count" with an ending value of 5.
+		cout << "Average Guess Value: \t" << ew2.getAvgGuess() << endl << endl;
 	}
-	catch (exception e) {
-		cout << "you must enter an integer between 1 and 9****" << endl << endl;  cin.ignore();
-	}
-
+	// for testing purposes... keep console window from exiting
 	cin.get();
 }
