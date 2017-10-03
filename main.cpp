@@ -90,6 +90,16 @@ int main()
 
 	// encrypt() will shift special characters and numbers without any wrapping.
 	cout << ew2.encrypt("this is to test special characters 123 123 !@#$%^&*( ") << endl << endl;
+	
+	// testing an implicit cast of character passed as integer. Expect prompt to enter an integer value between 1 and 9
+	int testImplicitCast = 'a';
+	ew2.checkShift(testImplicitCast);
+
+	// testing an integer argument above 9. Expect prompt to enter an integer value between 1 and 9
+	ew.checkShift(10);
+
+	// testing an integer argument below 1. Expect prompt to enter an integer value between 1 and 9
+	ew.checkShift(0);
 
 	// for loop to determine if checkShift() method provides correct return values of passed argument in relation to "shift" value for all possible shift values.
 	for (int i = 1; i < 10; i++) {
@@ -112,6 +122,10 @@ int main()
 		// expect an average between "total guess count sum" and "total guess count" with an ending value of 5.
 		cout << "Average Guess Value: \t" << ew2.getAvgGuess() << endl << endl;
 	}
+
+	// testing method to retrieve original phrase, pre encryption. expecting: "this is to test special characters 123 123 !@#$%^&*(" , as output.
+	cout << ew2.getPhrase();
+
 	// for testing purposes... keep console window from exiting
 	cin.get();
 }

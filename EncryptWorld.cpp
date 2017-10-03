@@ -83,6 +83,10 @@ string EncryptWorld::encrypt(string phrase)
 
 int EncryptWorld::checkShift(int guess)
 {
+	if (guess > 9 || guess < 1) {
+		cout << "please enter an integer between 1 and 9" << endl;
+		return 2;
+	}
 	if (guess == shift)
 	{
 		statistics(guess, 0);

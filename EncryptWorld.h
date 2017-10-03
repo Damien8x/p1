@@ -83,10 +83,15 @@ public:
 	// postcondition: returns the number of -1 return values from previous checkShift() calls. object state not be impacted.
 	int getLowGuessCount() const;
 
-	//definition: associated with checkShift() method, returns the number of "guesses" greater than  cryptic shift value at time of call (total of 1 return values from checkShift() calls)
+	// definition: associated with checkShift() method, returns the number of "guesses" greater than  cryptic shift value at time of call (total of 1 return values from checkShift() calls)
 	// precondition: a call to checkShift() with a return value of 1 required for a return value other than the default 0.
 	// postcondition: returns the number of 1 return values from previous checkShift() calls. object state not be impacted.
 	int getHighGuessCount() const;	
+
+	// defintition: for purpose of retrieving original string prior to encryption
+	// precondition: object.encrypt() must be called for getPhrase() to return a value other than " ";
+	// postcondition: returns string unencrypted. method does not impact state of object.
+	string getPhrase() const;
 
 private:
 	
@@ -124,5 +129,5 @@ private:
 
 	int lowGuessCount;
 
-	string getPhrase() const;
+	
 };
