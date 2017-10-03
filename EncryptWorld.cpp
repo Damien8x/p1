@@ -3,9 +3,16 @@
 // Date: 09/28/2017
 // Version: 1.0
 //
-// class aims to provide necessary functions in a readable, logical, efficient fashion to program applications
-// requring a caesar encryption of strings greater than 3 characters, while providing the means to fascilitate a guessing
-// game based on a passed integer value in relation to the shift value used. 
+// Description: class aims to provide functions in a logical, efficient format, capable of encrypting passed strings greater than 3 characters, using a caesar cryptic shift.
+// In addition, class provides necessary functions to fascilitate a guessing game from passed data in relation to the shift value used during encryption.
+// Statistics are also provided modularly through accesor methods for UI benefits. Minimal error handling provided through the class. prompts will display indicating improper data
+// but error handling on the application side will be necessary to maintain integrity of the program. Object's encryption may be turned off though a public function, as well as 
+// the ability to reset an object to its intitial state. Specifics regarding public methods have been laid out below.
+//
+// Assumptions: class will be utilized for its intended purporse of encryption followed by an interactive guessing game which provides statitical feedback. Failure to succesfuly encrypt
+// a phrase prior to calling checkShift() method or any accesor methods will yield insignifcant data. The use of the objectReset() method should only be used to clear all existing data
+// and return object to its initial state. by using the encryptionOff() method you prevent  encryption and ability to randomize a new shift value. Error handling will consist of console prompts
+// to enter acceptable data and pre-determined return values stated below. Application programmers must handle improper data to ensure preconditions are met for object integrety.
 
 #include "EncryptWorld.h"
 #include <iostream>
@@ -148,37 +155,51 @@ void EncryptWorld::statistics(int guess, int relativeToShift)
 	}
 }
 
-// mutator member function, sets phrase. called from encrypt() method
+// Description: mutator member function, sets phrase. called from encrypt() method
+// input: string
+// modify: shift and phrase attributes
 void EncryptWorld::setPhrase(string phrase) {
 		this->phrase = phrase;
 }
 
-// mutator member function, increments guessCount by 1. Called per call to checkShift() through helper method statistics()
+// Description: mutator member function, changes setTotalGuess. called from statistics() method
+// input: n/a
+// modify: guessCount attribute increments by 1
 void EncryptWorld::setGuessCount() {
 	this->guessCount++;
 }
 
-// mutator member function, adds totalGuessCount to itself. Called per call to checkShift() through helper method statistics()
+// Description: mutator member function, sets totalGuess . called from statistics() method
+// input: int
+// modify: totalGuess adds passed integer to itself
 void EncryptWorld::setTotalGuess(int guess) {
 	this->totalGuess += guess;
 }
 
-// mutator member function, averages totalGuess and guessCount. Called per call to checkShift() through helper method statistics()
+// Description: mutator member function, sets avgGuess. called from  statistics() method
+// input: integer, integer
+// modify: changes avgGuess to reflect avg of totalGuess and guessCount attributes
 void EncryptWorld::setAvgGuess(int totalGuess, int guessCount) {
 	this->avgGuess = totalGuess / guessCount;
 }
 
-// mutator member function, increments highGuessCount by 1. Called per call to checkShift() where return value is equal to 1, through helper method statistics.
+// Description: mutator member function, sets highGuessCount. called from statistics() method
+// input: n/a
+// modify: incrememnts highGuessCount by 1
 void EncryptWorld::setHighGuessCount() {
 	this->highGuessCount++;
 }
 
-// mutator member function, increments low GuessCount by 1. Called per call to checkShift() where return value is equal to -1, through helper method statistics.
+// Description: mutator member function, sets lowGuessCount. called from statistics() method
+// input: n/a
+// modify: increments lowGuessCount by 1
 void EncryptWorld::setLowGuessCount() {
 	this->lowGuessCount++;
 }
 
-// mutator member function, sets value of object's "on" attribute. a passed value of "false" will disable encryption
+// Description: mutator member function, sets on attribute. 
+// input: boolean
+// modify: changes state of on attribute
 void EncryptWorld::setOn(bool setting) {
 	this->on = setting;
 }

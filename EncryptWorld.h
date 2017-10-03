@@ -3,15 +3,16 @@
 // Date: 09/28/2017
 // Version: 1.0
 //
-// Desctription: Class designed for applications where caesar shift encryption is necessary, with extended uses including necessary methods for a responsive encryption "shift" guessing gamae.
-// encrypt() method fascilitates a  caesar shift  encryption of a string argument, with a random shift value between 1-9. EncryptWorld objects tracks data passed through its method checkShift() and 
-// makes statistical data available though a number of "get" methods, including; an average of passed integers, total of all integers passed,  a count of integers passed,
-// a count of integers passed less than shift value and a count of integers passed greater than shift value. intent of provided data is to make accesible the necessary information for an application capable
-// of allowing users to view an encrypted phrase and make a guess of the "shift" value used. provided information can be programmed to aid or display statistics to the user. Class object is capable
-// of diabling access to the encrypt() method if a boolean value of "false"  is passed to the encryptionOff() method. Access can be made available with a "true" value as an argument to the encryptionOff() method. 
-// encryptionOff() will allow application programmer to deactivate encryption until a user guesses the correct shift. Other applications of the encryptionOff() method are possible and welcomed. EncryptWorldd
-// object has a objectReset() method, bringing all values of object to its initial state. objectReset() allows for repeat use of object over multiple encryptions and guessing games, allowing for new, fresh
-// statistics. Method particulars and change affects on object states will be laid out in the method descriptions below.
+// Description: class aims to provide functions in a logical, efficient format, capable of encrypting passed strings greater than 3 characters, using a caesar cryptic shift.
+// In addition, class provides necessary functions to fascilitate a guessing game from passed data in relation to the shift value used during encryption.
+// Statistics are also provided modularly through accesor methods for UI benefits. Minimal error handling provided through the class. prompts will display indicating improper data
+// but error handling on the application side will be necessary to maintain integrity of the program. Object's encryption may be turned off though a public function, as well as 
+// the ability to reset an object to its intitial state. Specifics regarding public methods have been laid out below.
+//
+// Assumptions: class will be utilized for its intended purporse of encryption followed by an interactive guessing game which provides statitical feedback. Failure to succesfuly encrypt
+// a phrase prior to calling checkShift() method or any accesor methods will yield insignifcant data. The use of the objectReset() method should only be used to clear all existing data
+// and return object to its initial state. by using the encryptionOff() method you prevent  encryption and ability to randomize a new shift value. Error handling will consist of console prompts
+// to enter acceptable data and pre-determined return values stated below. Application programmers must handle improper data to ensure preconditions are met for object integrety.
 
 #include <iostream>
 using namespace std;
