@@ -63,6 +63,10 @@ string EncryptWord::encrypt(string phrase)
 
 			int caesarShift = 26 - randomShift;
 
+			const int ASCII_END_UPPER_ALPHABET_VALUE = 90;
+
+			const int ASCII_END_LOWER_ALPHABET_VALUE = 123;
+
 			int crypticAscii;
 
 			for (int i = 0; i < phrase.length(); i++) {
@@ -72,10 +76,10 @@ string EncryptWord::encrypt(string phrase)
 				if (ascii == 32) {
 					crypticAscii = 32;
 				}
-				else if (ascii >= lowerLowShift && ascii <= 90) {
+				else if (ascii >= lowerLowShift && ascii <= ASCII_END_UPPER_ALPHABET_VALUE) {
 					crypticAscii = ascii - caesarShift;
 				}
-				else if (ascii >= upperHighShift && ascii <= 123) {
+				else if (ascii >= upperHighShift && ascii <= ASCII_END_LOWER_ALPHABET_VALUE) {
 					crypticAscii = ascii - caesarShift;
 				}
 				else {
@@ -90,7 +94,10 @@ string EncryptWord::encrypt(string phrase)
 
 int EncryptWord::checkShift(int guess)
 {
-	if (guess > 9 || guess < 1) {
+	const int HIGH_GUESS_BOUNDRY = 9;
+	const int LOW_GUESS_BOUNDRY = 1;
+
+	if (guess > HIGH_GUESS_BOUNDRY || guess < LOW_GUESS_BOUNDRY) {
 		cout << "please enter an integer between 1 and 9" << endl;
 		return 2;
 	}
