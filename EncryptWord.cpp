@@ -18,6 +18,12 @@
 #include <iostream>
 using namespace std;
 
+const int HIGH_GUESS_BOUNDRY = 9;
+const int LOW_GUESS_BOUNDRY = 1;
+const int ASCII_END_UPPER_ALPHABET_VALUE = 90;
+const int ASCII_END_LOWER_ALPHABET_VALUE = 123;
+const int MINIMUM_PHRASE_LENGTH = 4;
+
 // object attributes
 int shift;
 bool on;
@@ -42,13 +48,12 @@ EncryptWord::EncryptWord()
 
 string EncryptWord::encrypt(string phrase)
 {
-
 	setPhrase(phrase);
 	if (on == false) {
 		cout << "Sorry, encryption has been disabled." << endl;
 		return getPhrase();
 	}
-	if (phrase.length() < 4) {
+	if (phrase.length() < MINIMUM_PHRASE_LENGTH) {
 		cout << "Sorry, phrase must be 4 characters or more" << endl;
 		return getPhrase();
 	}
@@ -62,10 +67,6 @@ string EncryptWord::encrypt(string phrase)
 			int upperHighShift = 123 - randomShift;
 
 			int caesarShift = 26 - randomShift;
-
-			const int ASCII_END_UPPER_ALPHABET_VALUE = 90;
-
-			const int ASCII_END_LOWER_ALPHABET_VALUE = 123;
 
 			int crypticAscii;
 
@@ -94,9 +95,7 @@ string EncryptWord::encrypt(string phrase)
 
 int EncryptWord::checkShift(int guess)
 {
-	const int HIGH_GUESS_BOUNDRY = 9;
-	const int LOW_GUESS_BOUNDRY = 1;
-
+	
 	if (guess > HIGH_GUESS_BOUNDRY || guess < LOW_GUESS_BOUNDRY) {
 		cout << "please enter an integer between 1 and 9" << endl;
 		return 2;
@@ -130,14 +129,26 @@ void EncryptWord::encryptionOff(bool setting)
 
 void EncryptWord::objectReset()
 {
-		this->shift = 0;
+	setShift(0);
+	setOn(true);
+	setTotalGuess(0);
+	setPhrase("");
+	setIncrementalAttributes();
+		/*this->shift = 0;
 		this->on = true;
 		this->guessCount = 0;
 		this->avgGuess = 0;
 		this->totalGuess = 0;
 		this->highGuessCount = 0;
 		this->lowGuessCount = 0;
-		this->phrase = " ";
+		this->phrase = " "; */
+}
+
+void EncryptWord::setIncrementalAttributes() {
+	this->guessCount = 0;
+	this->avgGuess = 0;
+	this->highGuessCount = 0;
+	this->lowGuessCount = 0;
 }
 
 // helper method designed to call appropriate functions for game statistics

@@ -115,6 +115,8 @@ private:
 	void setOn(bool);
 
 	void setShift(int);
+
+	void setIncrementalAttributes();
 	
 	bool getOn() const;
 
