@@ -22,6 +22,8 @@ const int HIGH_GUESS_BOUNDRY = 9;
 const int LOW_GUESS_BOUNDRY = 1;
 const int ASCII_END_UPPER_ALPHABET_VALUE = 90;
 const int ASCII_END_LOWER_ALPHABET_VALUE = 123;
+const int ASCII_BLANK_SPACE_VALUE = 32;
+const int NUMBER_OF_LETTERS = 26;
 const int MINIMUM_PHRASE_LENGTH = 4;
 
 // object attributes
@@ -58,15 +60,16 @@ string EncryptWord::encrypt(string phrase)
 		return getPhrase();
 	}
 	else {
+			//encryptionOff(false);//**************************************DO SOMETHING HERE**********************************************************************************
 			int randomShift = rand() % 9 + 1;
 			setShift(randomShift);
 			string crypticPhrase;
 
-			int lowerLowShift = 90 - randomShift;
+			int lowerLowShift = ASCII_END_UPPER_ALPHABET_VALUE - randomShift;
 
-			int upperHighShift = 123 - randomShift;
+			int upperHighShift = ASCII_END_LOWER_ALPHABET_VALUE - randomShift;
 
-			int caesarShift = 26 - randomShift;
+			int caesarShift = NUMBER_OF_LETTERS - randomShift;
 
 			int crypticAscii;
 
@@ -74,8 +77,8 @@ string EncryptWord::encrypt(string phrase)
 
 				int ascii = int(phrase[i]);
 
-				if (ascii == 32) {
-					crypticAscii = 32;
+				if (ascii == ASCII_BLANK_SPACE_VALUE) {
+					crypticAscii = ASCII_BLANK_SPACE_VALUE;
 				}
 				else if (ascii >= lowerLowShift && ascii <= ASCII_END_UPPER_ALPHABET_VALUE) {
 					crypticAscii = ascii - caesarShift;
@@ -115,17 +118,7 @@ int EncryptWord::checkShift(int guess)
 		return -1;
 }
 
-void EncryptWord::encryptionOff(bool setting)
-{
-	if (setting == true)
-	{
-		setOn(true);	
-	}
-	else if (setting == false)
-	{
-		setOn(false);	
-	}
-}
+
 
 void EncryptWord::objectReset()
 {
@@ -149,6 +142,22 @@ void EncryptWord::setIncrementalAttributes() {
 	this->avgGuess = 0;
 	this->highGuessCount = 0;
 	this->lowGuessCount = 0;
+}
+// definition: Disables EncryptWord(string) from returning encryption of passed string.
+// precondition: Accepts boolean value of "true" to enable EncryptWord(string) encryption or "false" to disable.
+// postcondition: All values of object attributes will remain identical post call. calls to encryp(string) will display
+// prompt stating encryption has been disabled and not execute the method any further.
+
+void EncryptWord::encryptionOff(bool setting)
+{
+	if (setting == true)
+	{
+		setOn(true);
+	}
+	else if (setting == false)
+	{
+		setOn(false);
+	}
 }
 
 // helper method designed to call appropriate functions for game statistics

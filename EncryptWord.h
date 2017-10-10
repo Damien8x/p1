@@ -52,12 +52,6 @@ public:
 	// for every checkShift(int) return value of 1.
 	int checkShift(int);
 
-	// definition: Disables EncryptWord(string) from returning encryption of passed string.
-	// precondition: Accepts boolean value of "true" to enable EncryptWord(string) encryption or "false" to disable.
-	// postcondition: All values of object attributes will remain identical post call. calls to encryp(string) will display
-	// prompt stating encryption has been disabled and not execute the method any further.
-	void encryptionOff(bool);
-
 	// definition: resets all class attributes to default values. assumed use; prior to call to encrypt(string) and subsequently checkShift(int) method, allowing for user statistics
 	// associated with checkShift(int) to not include prior encryptions and "guesses".
 	// precondition: object takes no arguments. if object state has not been changed post initialization, method will have no impact on object's state.
@@ -97,7 +91,10 @@ public:
 	int getShift() const;
 
 private:
+
 	
+	void encryptionOff(bool);
+
 	void setPhrase(string);
 
 	void statistics(int, int);

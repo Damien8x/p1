@@ -66,18 +66,6 @@ int main()
 
 	cout << ew.getShift() << "****************************" << endl;
 
-	// Descriptioin: disable encryption
-	// input: boolean
-	// modify: change to object's "on" variable
-	// output: none
-	ew.encryptionOff(false);
-
-	// Description: Test encryption is off
-	// input: acceptable string
-	// modify: no modification to object
-	// output: return of original string and a prompt from class method stating encryption disabled
-	ew.encrypt("is encryption off?");
-
 	// for loop to determine if checkShift() method provides correct return values of passed argument in relation to "shift" value for all possible shift values.
 	iterateGuessShift(1, ew);
 
