@@ -1,7 +1,7 @@
 // Author: Damien Sudol
 // Filename: EncryptWord P1
-// Date: 09/28/2017
-// Version: 1.0
+// Date: 10/10/2017
+// Version: 1.1
 //
 // Description: class aims to provide functions in a logical, efficient format, capable of encrypting passed strings greater than 3 characters, using a caesar cryptic shift.
 // In addition, class provides necessary functions to fascilitate a guessing game from passed data in relation to the shift value used during encryption.
@@ -18,6 +18,7 @@
 #include <iostream>
 using namespace std;
 
+// class constants
 const int HIGH_GUESS_BOUNDRY = 9;
 const int LOW_GUESS_BOUNDRY = 1;
 const int ASCII_END_UPPER_ALPHABET_VALUE = 90;
@@ -35,6 +36,7 @@ int totalGuess;
 int highGuessCount;
 int lowGuessCount;
 string phrase;
+string encryptPhrase;
 
 EncryptWord::EncryptWord()
 {
@@ -46,11 +48,12 @@ EncryptWord::EncryptWord()
 	this-> highGuessCount = 0;
 	this-> lowGuessCount = 0;
 	this-> phrase = "";	
+	this-> encryptPhrase = "";
 }
 
 string EncryptWord::encrypt(string phrase)
 {
-	setPhrase(phrase);
+	
 	if (on == false) {
 		cout << "Sorry, encryption has been disabled." << endl;
 		return getPhrase();
@@ -60,9 +63,12 @@ string EncryptWord::encrypt(string phrase)
 		return getPhrase();
 	}
 	else {
-			//encryptionOff(false);//**************************************DO SOMETHING HERE**********************************************************************************
+			encryptionOff(false);
+
 			int randomShift = rand() % 9 + 1;
+			
 			setShift(randomShift);
+
 			string crypticPhrase;
 
 			int lowerLowShift = ASCII_END_UPPER_ALPHABET_VALUE - randomShift;
@@ -92,6 +98,7 @@ string EncryptWord::encrypt(string phrase)
 				char crypticChar = char(crypticAscii);
 				crypticPhrase.push_back(crypticChar);
 			}
+			setPhrase(phrase, crypticPhrase);
 			return crypticPhrase;
 		}
 }
@@ -106,6 +113,7 @@ int EncryptWord::checkShift(int guess)
 	if (guess == shift)
 	{
 		statistics(guess, 0);
+		encryptionOff(true);
 		return 0;
 	}
 	else if (guess > shift)
@@ -118,36 +126,23 @@ int EncryptWord::checkShift(int guess)
 		return -1;
 }
 
-
-
 void EncryptWord::objectReset()
 {
-	setShift(0);
+	this-> guessCount = 0;
+	this-> avgGuess = 0;
+	this-> highGuessCount = 0;
+	this-> lowGuessCount = 0;
+	this-> shift = 0;
+	this->totalGuess = 0;
 	setOn(true);
-	setTotalGuess(0);
-	setPhrase("");
-	setIncrementalAttributes();
-		/*this->shift = 0;
-		this->on = true;
-		this->guessCount = 0;
-		this->avgGuess = 0;
-		this->totalGuess = 0;
-		this->highGuessCount = 0;
-		this->lowGuessCount = 0;
-		this->phrase = " "; */
+	setPhrase("", "");
 }
 
-void EncryptWord::setIncrementalAttributes() {
-	this->guessCount = 0;
-	this->avgGuess = 0;
-	this->highGuessCount = 0;
-	this->lowGuessCount = 0;
-}
-// definition: Disables EncryptWord(string) from returning encryption of passed string.
-// precondition: Accepts boolean value of "true" to enable EncryptWord(string) encryption or "false" to disable.
-// postcondition: All values of object attributes will remain identical post call. calls to encryp(string) will display
-// prompt stating encryption has been disabled and not execute the method any further.
-
+// definition: Disables use of encrypt(). Toggles getPhrase() from returning encrypted or decrypted phrase.
+// precondition: legal arguments, true or false. 
+// modify: "on" indirectly
+// postcondition: Attribute "on" will be set to value of argument. getPhrase() function returns encryptPhrase if argument is false, returns phrase if argument is true (encrypted vs decrypted)
+// true argument will disable encrypt()
 void EncryptWord::encryptionOff(bool setting)
 {
 	if (setting == true)
@@ -160,9 +155,10 @@ void EncryptWord::encryptionOff(bool setting)
 	}
 }
 
-// helper method designed to call appropriate functions for game statistics
+// Description: helper method designed to call appropriate functions for game statistics
 // precondition: accepts two arguments of type int passed from checkShift(). passed values should reflect
 // user "guess" and said guess in relation to the shift value
+// modify: no attributes directly
 // postcondition: new values will be set to methods setGuessCount(), setTotalGuess(), setAvgGuess() and if 1 is passed
 // as integer "relativeToShift" set highGuessCount() will be called. if relativeToShift is passed as -1
 // a call to setLowGuessCount() will be called.
@@ -182,72 +178,86 @@ void EncryptWord::statistics(int guess, int relativeToShift)
 	}
 }
 
-// Description: mutator member function, sets shift value. Called from encrypt() method
-// input: int
-// modify shift value
+
+// Description: Mutator member fucntion, sets object's shift value. called from encrypt() method
+// precondition: integer value
+// moidfy: object's shift value
+// postcondition: shift value changed
 void EncryptWord::setShift(int shift) {
 	this->shift = shift;
 }
-
-// Description: mutator member function, sets phrase. called from encrypt() method
-// input: string
-// modify: shift and phrase attributes
-void EncryptWord::setPhrase(string phrase) {
+// Description: mutator member function, sets object's phrase and encryptPhrase. called from encrypt() method
+// precondition: must take in two arguments of type string
+// modify: phrase and encryptPhrase
+// postcondition: change of object attributes phrase and encryptPhrase
+void EncryptWord::setPhrase(string phrase, string encryptPhrase) {
 		this->phrase = phrase;
+		this->encryptPhrase = encryptPhrase;
 }
 
 // Description: mutator member function, changes setTotalGuess. called from statistics() method
-// input: n/a
-// modify: guessCount attribute increments by 1
+// precondition: n/a
+// modify: guessCount
+// postcondition: guessCount attribute increments by 1
 void EncryptWord::setGuessCount() {
 	this->guessCount++;
 }
 
 // Description: mutator member function, sets totalGuess . called from statistics() method
-// input: int
-// modify: totalGuess adds passed integer to itself
+// precondition: int
+// modify: totalGuess
+// postcondition: totalGuess adds passed integer to itself
 void EncryptWord::setTotalGuess(int guess) {
 	this->totalGuess += guess;
 }
 
 // Description: mutator member function, sets avgGuess. called from  statistics() method
-// input: integer, integer
-// modify: changes avgGuess to reflect avg of totalGuess and guessCount attributes
+// precondition: integer, integer
+// modify: avgGuess
+// postcondition: changes avgGuess to reflect avg of totalGuess and guessCount attributes
 void EncryptWord::setAvgGuess(int totalGuess, int guessCount) {
 	this->avgGuess = totalGuess / guessCount;
 }
 
 // Description: mutator member function, sets highGuessCount. called from statistics() method
-// input: n/a
-// modify: incrememnts highGuessCount by 1
+// precondition: n/a
+// modify: highGuessCount
+// postcondition: incrememnts highGuessCount by 1
 void EncryptWord::setHighGuessCount() {
 	this->highGuessCount++;
 }
 
 // Description: mutator member function, sets lowGuessCount. called from statistics() method
-// input: n/a
-// modify: increments lowGuessCount by 1
+// precondition: n/a
+// modify: lowGuessCount
+// postcondition: increments lowGuessCount by 1
 void EncryptWord::setLowGuessCount() {
 	this->lowGuessCount++;
 }
 
 // Description: mutator member function, sets on attribute. 
-// input: boolean
-// modify: changes state of on attribute
+// precondition: boolean
+// moidfy: may impact on attribute
+// postcondition: changes state of "on" attribute
 void EncryptWord::setOn(bool setting) {
 	this->on = setting;
 }
 
+// Description: Accesor function to object attribute, on
+// precondition: n/a
+// modify: n/a
+// postcondition: returns boolean value of "on"
 bool EncryptWord::getOn() const {
 	return on;
 }
 
 string EncryptWord::getPhrase() const {
-	return phrase;
-}
-
-int EncryptWord::getShift() const {
-	return shift;
+	if (on == true) {
+		return phrase;
+	}
+	if (on == false) {
+		return encryptPhrase;
+	}
 }
 
 int EncryptWord::getGuessCount() const{
