@@ -19,7 +19,7 @@
 // any call to the method with acceptable arguments will change object's "lowGuessCount", "highGuessCount", "avgGuessCount", "totalGuessCount", and "guessCount" attributes; some by incremental values
 // others dependent on passed argument, as laid out per EncryptWord.h specifications. Driver will also test arguments outside of the range 1-9 and implicit casting of doubles. Driver will
 // display output for each acceptable call to checkShift(), including; integer passed, relation to shift (-1 if below, 1 if above, 0 if the same), objects highGuessCount, lowGuessCount, avgGuessCount
-// guessCount and totalGuessCount, and getPhrase(), all of which may be impacted by call to checkShift().
+// guessCount and totalGuessCount, and getPhrase(), all of which may be impacted by call to checkShift(). A return value of 2 indicates input is invalid or out of bounds.
 // All accesor methods will be tested multiple times, during the testing of the checkShift() method and post call to the objectReset() method, which sets all object attributes to their initial state.
 // post call to objectReset() we expect all accessor method to return a value of 0, for integers and "", for strings.
 //
@@ -43,17 +43,20 @@ int main()
 	// create EncryptWord object
 	EncryptWord ew;
 
-	// Desciption: passing illegal argument, string of < 4 characters will results in error prompt from class
-	// input: string under 4 characters
+	// Desciption: passing illegal argument, string of < 4  will return a string value of -1, indicating a string has less than 4 character. 
+	// input: Illegal string under 4 characters
 	// modify: State not impacted
-	// expected output: console prompt asking for a minimum of 4 characters displayed with a return value equal to passed string (unencrypted).
+	// expected output: string return value of -1.
 	cout << "Testing illegal argument for encrypt(). less than 4 characters" << endl << endl;
-	string phrase = "aaa";
-	ew.encrypt(phrase);
+	
+		string shortStringPhrase = "aaa";
+		if (ew.encrypt(shortStringPhrase) == "-1"){
+			cout << "ERROR invalid input" << endl;
+		}
 	cout << "********************************************************************" << endl;
 	
 	// Set phrase to legal argument, string with > 4 characters
-	phrase = "aa bb cc xx yy zz AA BB CC XX YY ZZ";
+	string phrase = "aa bb cc xx yy zz AA BB CC XX YY ZZ";
 
 	// Description: Test legal argument.
 	// input: legal string argument
@@ -84,7 +87,16 @@ int main()
 	testCheckShiftBoundries(ew2);
 	cout << "********************************************************************" << endl;
 
+	// Descritpion: testing access to encrypt() method after encryption and before call to objectReset() / correct shift value passed to checkShift()
+	// input: legal string argument
+	// modify: n/a
+	// expected output: a string value of "-2" indicating accesability is restricted to the function
+	cout << "Testing access to encrypt() method" << endl << endl;
+	cout << ew2.encrypt("I Should print a -2") << endl;
+	cout << "********************************************************************" << endl;
 
+
+	cout << "Testing encryption access";
 	// Description Testing for implicit casting of doubles. expect i to be rounded down to integer, producing results identical to if i was assigned integer value.
 	cout << "Testing implicit casating of doubles for all legal checkShift() arguments" << endl << endl;
 	iterateGuessShift(1.3, ew2);
@@ -150,21 +162,21 @@ void testCheckShiftBoundries(EncryptWord& ew) {
 	// Description: testing for implicit cast of character passed as an integer of an illegal value.
 	// input: Type char. will be implicityly cast
 	// modify: n/a
-	// output: method will return 2 and prompt user to input an integer between 1 and 9
+	// output: will return an integer of 2, indicating input out of bounds or invalid.
 	int testImplicitCast = 'a';
-	ew.checkShift(testImplicitCast);
+	cout << ew.checkShift(testImplicitCast) << endl << endl;
 
 	// Description: testing an illegal integer argument above 9. 
 	// input: integer above 9
 	// modify: n/a
-	// output: return 2, prompt user to input integer between 1 and 9
-	ew.checkShift(10);
+	// output: will return an integer of 2, indicating input out of bounds or invalid.
+	cout << ew.checkShift(10) << endl << endl;
 
 	// Description: testing an illegal integer argument below 1. 
 	// input: integer below 1
 	// modify: n/a
-	// output: return 2, prompt user to input integer between 1 and 9
-	ew.checkShift(0);
+	// output:  will return an integer of 2, indicating input out of bounds or invalid.
+	cout << ew.checkShift(0) << endl << endl;
 }
 
 void iterateGuessShift(int i, EncryptWord& ew) {

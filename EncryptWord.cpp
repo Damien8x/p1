@@ -19,13 +19,19 @@
 using namespace std;
 
 // class constants
-const int HIGH_GUESS_BOUNDRY = 9;
-const int LOW_GUESS_BOUNDRY = 1;
 const int ASCII_END_UPPER_ALPHABET_VALUE = 90;
 const int ASCII_END_LOWER_ALPHABET_VALUE = 123;
 const int ASCII_BLANK_SPACE_VALUE = 32;
 const int NUMBER_OF_LETTERS = 26;
 const int MINIMUM_PHRASE_LENGTH = 4;
+const int SHIFT_UPPER_BOUND = 9;
+const int SHIFT_LOWER_BOUND = 0;
+const int CORRECT_GUESS = 0;
+const int LOW_GUESS = -1;
+const int HIGH_GUESS = 1;
+const int INVALID_GUESS = 2;
+const string INVALID_INPUT_ERROR = "-1";
+const string ENCRYPTION_DISABLED = "-2";
 
 // object attributes
 int shift;
@@ -53,77 +59,78 @@ EncryptWord::EncryptWord()
 
 string EncryptWord::encrypt(string phrase)
 {
-	
+	int phraseLength = phrase.length();
+
 	if (on == false) {
-		cout << "Sorry, encryption has been disabled." << endl;
-		return getPhrase();
+		return ENCRYPTION_DISABLED;
 	}
-	if (phrase.length() < MINIMUM_PHRASE_LENGTH) {
-		cout << "Sorry, phrase must be 4 characters or more" << endl;
-		return getPhrase();
-	}
-	else {
-			encryptionOff(false);
 
-			int randomShift = rand() % 9 + 1;
-			
-			setShift(randomShift);
+	if (phraseLength > MINIMUM_PHRASE_LENGTH) {
 
-			string crypticPhrase;
+		encryptionOff(false);
 
-			int lowerLowShift = ASCII_END_UPPER_ALPHABET_VALUE - randomShift;
+		int randomShift = rand() % 9 + 1;
 
-			int upperHighShift = ASCII_END_LOWER_ALPHABET_VALUE - randomShift;
+		setShift(randomShift);
 
-			int caesarShift = NUMBER_OF_LETTERS - randomShift;
+		string crypticPhrase;
 
-			int crypticAscii;
+		int lowerLowShift = ASCII_END_UPPER_ALPHABET_VALUE - randomShift;
 
-			for (int i = 0; i < phrase.length(); i++) {
+		int upperHighShift = ASCII_END_LOWER_ALPHABET_VALUE - randomShift;
 
-				int ascii = int(phrase[i]);
+		int caesarShift = NUMBER_OF_LETTERS - randomShift;
 
-				if (ascii == ASCII_BLANK_SPACE_VALUE) {
-					crypticAscii = ASCII_BLANK_SPACE_VALUE;
-				}
-				else if (ascii >= lowerLowShift && ascii <= ASCII_END_UPPER_ALPHABET_VALUE) {
-					crypticAscii = ascii - caesarShift;
-				}
-				else if (ascii >= upperHighShift && ascii <= ASCII_END_LOWER_ALPHABET_VALUE) {
-					crypticAscii = ascii - caesarShift;
-				}
-				else {
-					crypticAscii = ascii + randomShift;
-				}
-				char crypticChar = char(crypticAscii);
-				crypticPhrase.push_back(crypticChar);
+		int crypticAscii;
+
+		for (int i = 0; i < phraseLength; i++) {
+
+			int ascii = int(phrase[i]);
+
+			if (ascii == ASCII_BLANK_SPACE_VALUE) {
+				crypticAscii = ASCII_BLANK_SPACE_VALUE;
 			}
-			setPhrase(phrase, crypticPhrase);
-			return crypticPhrase;
+			else if (ascii >= lowerLowShift && ascii <= ASCII_END_UPPER_ALPHABET_VALUE) {
+				crypticAscii = ascii - caesarShift;
+			}
+			else if (ascii >= upperHighShift && ascii <= ASCII_END_LOWER_ALPHABET_VALUE) {
+				crypticAscii = ascii - caesarShift;
+			}
+			else {
+				crypticAscii = ascii + randomShift;
+			}
+			char crypticChar = char(crypticAscii);
+			crypticPhrase.push_back(crypticChar);
 		}
+		setPhrase(phrase, crypticPhrase);
+		return crypticPhrase;
+	}
+	else
+		return  INVALID_INPUT_ERROR;
 }
 
 int EncryptWord::checkShift(int guess)
 {
 	
-	if (guess > HIGH_GUESS_BOUNDRY || guess < LOW_GUESS_BOUNDRY) {
-		cout << "please enter an integer between 1 and 9" << endl;
-		return 2;
-	}
 	if (guess == shift)
 	{
 		statistics(guess, 0);
 		encryptionOff(true);
-		return 0;
+		return CORRECT_GUESS;
 	}
-	else if (guess > shift)
+	else if (guess > shift  && guess < SHIFT_UPPER_BOUND)
 	{
 		statistics(guess, 1);
-		return 1;	
+		return HIGH_GUESS;	
+	}
+	else if (guess < shift && guess > SHIFT_LOWER_BOUND)
+	{
+		statistics(guess, -1);
+		return LOW_GUESS;
 	}
 	else
-		statistics(guess, -1);
-		return -1;
+		return INVALID_GUESS;
+
 }
 
 void EncryptWord::objectReset()
@@ -255,9 +262,8 @@ string EncryptWord::getPhrase() const {
 	if (on == true) {
 		return phrase;
 	}
-	if (on == false) {
+	else
 		return encryptPhrase;
-	}
 }
 
 int EncryptWord::getGuessCount() const{

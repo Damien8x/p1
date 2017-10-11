@@ -36,7 +36,7 @@ public:
 	// getPhrase() will return the encrypted phrase until either checkShift() is passed the value equal to the encrypted shift value provided, or objectReset() is called, allowing for re-use of the function and getPhrase() to return a decrypted value . 
 	// precondition: method accepts one argument of type string, with a minimum of 4 characters for succesful encryption. Succesful encryption will disable re-use of the function and set the return
 	// value of getPhrase() to the newly encrypted phrase. If one of two conditions are met; objectReset() is called or the "shift" value is passed to the checkShift() method, the encrypt() method will be unlocked.
-	// postcondition: returns encrypted version of argument according to the associated shift value.
+	// postcondition: returns encrypted version of argument according to the associated shift value. A string return of -1 indicates minimal size of argument is not met. A return value of -2 indicates encryption has been disabled.
 	string encrypt(string);
 
 	// definition: assumed that method will be used as a tool to determine value of the encryption "shift" used in encrypt(string). method has four possible integer return values
@@ -47,7 +47,7 @@ public:
 	// passed integer related to "shift" value, including return values of the following EncryptWord methods; getGuessCount() return value will increment by 1 for each call to checkShift(int),
 	// getTotalGuess() return value will increase by the value of integer passed to checkShift(int), getAvgGuess() return value update to reflect an avg of all passed values to checkShift(int) post
 	// object initization and prior to objectReset() call, getLowGuessCount() return value will increment by one for every return value of -1, getHighGuessCount() return value will increment by one
-	// for every checkShift(int) return value of 1.
+	// for every checkShift(int) return value of 1. Out of bounds or invalid integer arguments will return a value of 2, indicating an error, and must be handled by the application programmer.
 	// precondition: legal arguments, integer value between 1 and 9
 	// postcondition: return integer value of -1, 0, 1, or 2 
 	int checkShift(int);
@@ -129,6 +129,5 @@ private:
 
 	string phrase;
 
-	string encryptPhrase;
-	
+	string encryptPhrase;	
 };
